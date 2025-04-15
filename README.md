@@ -1,3 +1,14 @@
+# statuspage
+
+- Repo-Status: Dev
+- Repo-Contents: Demo
+- Repo-Service-Name: Statsig's Open-Source Status Page
+- Repo-Ownership-Rating: 1
+- Repo-Quality-Rating: 3
+- Repo-Next-Review-Due: 2025-05-01
+
+Published at https://uoy-trials.github.io/statuspage/
+
 [![Health Check](../../actions/workflows/health-check.yml/badge.svg)](../../actions/workflows/health-check.yml)
 
 # Statsig's Open-Source Status Page
