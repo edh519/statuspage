@@ -58,9 +58,9 @@ done
 
 if [[ $commit == true ]]
 then
-  # Let's make Vijaye the most productive person on GitHub.
-  git config --global user.name 'Vijaye Raji'
-  git config --global user.email 'vijaye@statsig.com'
+  # does this need to be here at all or can it be an NPA?
+  git config --global user.name 'Matthew Bailey'
+  git config --global user.email 'matthew.bailey@york.ac.uk'
   git add -A --force logs/
   git commit -am '[Automated] Update Health Check Logs'
   git push
