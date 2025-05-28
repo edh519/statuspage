@@ -51,14 +51,14 @@ git push
 failures=""
 
 for logfile in logs/*_report.log; do
-  last_line=$(tail -n 1 "$logfile")
-  if [[ "$last_line" == *"failed" ]]; then
-    key=$(basename "$logfile" _report.log)
-    failures+="$key failed at $last_line"$'\n'
-  fi
+  last_line=$(tail -n 1 "$logfile")
+  if [[ $last_line == *failed* ]]; then
+    key=$(basename "$logfile" _report.log)
+    failures+="$key failed at $last_line"$'\n'
+  fi
 done
 
 if [[ -n "$failures" ]]; then
-  echo "$failures" > failures.txt
+  echo "$failures" > failures.txt
 fi
 
