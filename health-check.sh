@@ -45,3 +45,20 @@ git config --global user.email 'ytu-developers-group+githubapi@york.ac.uk'
 git add -A --force logs/
 git commit -am '[Automated] Update Health Check Logs'
 git push
+
+
+# Check for any failures in the latest run and compile a log file of these errors
+failures=""
+
+for logfile in logs/*_report.log; do
+  last_line=$(tail -n 1 "$logfile")
+  if [[ "$last_line" == *"failed" ]]; then
+    key=$(basename "$logfile" _report.log)
+    failures+="$key failed at $last_line"$'\n'
+  fi
+done
+
+if [[ -n "$failures" ]]; then
+  echo "$failures" > failures.txt
+fi
+
