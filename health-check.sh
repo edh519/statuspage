@@ -29,7 +29,7 @@ mkdir -p logs
 for (( index=0; index < ${#KEYSARRAY[@]}; index++))
 do
   key="${KEYSARRAY[index]}"
-  url="${URLSARRAY[index]}"
+  url="{URLSARRAY[index]}"
   echo "  $key=$url"
 
   for i in 1 2 3 4; 
