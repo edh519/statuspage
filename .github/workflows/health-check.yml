@@ -12,7 +12,7 @@ jobs:
     name: Check all sites
     steps:
       - name: Say hello
-        run: echo "Health check running!"
+        run: echo "Health check running now!"
       # - uses: actions/checkout@v4
       # - name: Run Shell Script
       #   id: shell_script_run
