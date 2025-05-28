@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Say hello
         run: echo "Health check running!"
-     # - uses: actions/checkout@v4
-     # - name: Run Shell Script
-       # id: shell_script_run
-       # run: bash ./health-check.sh
+      # - uses: actions/checkout@v4
+      # - name: Run Shell Script
+      #   id: shell_script_run
+      #   run: bash ./health-check.sh
