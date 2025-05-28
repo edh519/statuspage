@@ -30,8 +30,10 @@ for (( index=0; index < ${#KEYSARRAY[@]}; index++))
 do
   key="${KEYSARRAY[index]}"
   url="${URLSARRAY[index]}"
-  echo "  $key=$url"
+  
+  url="${url//$'\r'/}"
 
+  echo "  $key=$url"
   for i in 1 2 3 4; 
   do
     response=$(curl --write-out '%{http_code}' --silent --output /dev/null "$url")
