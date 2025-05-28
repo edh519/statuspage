@@ -13,13 +13,14 @@ URLSARRAY=()
 
 urlsConfig="./urls.cfg"
 echo "Reading $urlsConfig"
-while read -r line
-do
+while read -r line || [[ -n "$line" ]]; do
+  line=$(echo "$line" | tr -d '\r')
   echo "  $line"
   IFS='=' read -ra TOKENS <<< "$line"
-  KEYSARRAY+=(${TOKENS[0]})
-  URLSARRAY+=(${TOKENS[1]})
+  KEYSARRAY+=("${TOKENS[0]}")
+  URLSARRAY+=("${TOKENS[1]}")
 done < "$urlsConfig"
+
 
 echo "***********************"
 echo "Starting health checks with ${#KEYSARRAY[@]} configs:"
