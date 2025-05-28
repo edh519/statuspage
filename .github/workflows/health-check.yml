@@ -4,10 +4,11 @@ name: Scheduled Health Check
 on:
   schedule:
    - cron: '30 * * * *'
+  workflow_dispatch:
 
 jobs:
   health_check_job:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted]
     name: Check all sites
     steps:
        - uses: actions/checkout@v4
