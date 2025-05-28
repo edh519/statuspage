@@ -41,7 +41,7 @@ for (( index=0; index < ${#KEYSARRAY[@]}; index++ )); do
 done
 
 git config --global user.name 'ytubot'
-git config --global user.email 'ytu501@york.ac.uk'
+git config --global user.email 'ytu-developers-group+githubapi@york.ac.uk'
 git add -A --force logs/
 git commit -am '[Automated] Update Health Check Logs'
 git push
