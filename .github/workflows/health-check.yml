@@ -3,7 +3,7 @@ name: Scheduled Health Check
 # Controls when the action will run.
 on:
   schedule:
-   - cron: '30 * * * *'
+    - cron: '30 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -11,7 +11,28 @@ jobs:
     runs-on: [self-hosted]
     name: Check all sites
     steps:
-       - uses: actions/checkout@v4
-       - name: Run Shell Script
-         id: shell_script_run
-         run: bash ./health-check.sh
+      - uses: actions/checkout@v4
+
+      - name: Run Shell Script
+        id: shell_script_run
+        run: bash ./health-check.sh
+
+      - name: Send Email if Failures Exist
+        if: success() && exists('failures.txt')
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.york.ac.uk
+          server_port: 25
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "Health Check Failures"
+          body: |
+            The following checks failed:
+            ${{ steps.shell_script_run.outputs.failures }}
+          to: ytu-techsupport-group@york.ac.uk
+          from: do-not-reply@york.ac.uk
+
+      - name: Show Failures (for logs)
+        if: always()
+        run: cat failures.txt || echo "No failures"
+
