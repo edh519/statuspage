@@ -16,21 +16,3 @@ jobs:
       - name: Run Shell Script
         id: shell_script_run
         run: bash ./health-check.sh
-
-      - name: Send Email if Failures Exist
-        if: success() && exists('failures.txt')
-        uses: dawidd6/action-send-mail@v5
-        with:
-          server_address: ${{ secrets.SMTP_SERVERADDRESS }}
-          server_port: 25
-          subject: "Health Check Failures"
-          body: |
-            The following checks failed:
-            ${{ steps.shell_script_run.outputs.failures }}
-          to: ytu-techsupport-group@york.ac.uk
-          from: do-not-reply@york.ac.uk
-
-      - name: Show Failures (for logs)
-        if: always()
-        run: cat failures.txt || echo "No failures"
-
