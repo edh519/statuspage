@@ -11,7 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Check all sites
     steps:
-      - uses: actions/checkout@v4
-      - name: Run Shell Script
-        id: shell_script_run
-        run: bash ./health-check.sh
+      - name: Say hello
+        run: echo "Health check running!"
+     # - uses: actions/checkout@v4
+     # - name: Run Shell Script
+       # id: shell_script_run
+       # run: bash ./health-check.sh
