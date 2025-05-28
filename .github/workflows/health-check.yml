@@ -19,12 +19,10 @@ jobs:
 
       - name: Send Email if Failures Exist
         if: success() && exists('failures.txt')
-        uses: dawidd6/action-send-mail@v3
+        uses: dawidd6/action-send-mail@v5
         with:
-          server_address: smtp.york.ac.uk
+          server_address: ${{ secrets.SMTP_SERVERADDRESS }}
           server_port: 25
-          username: ${{ secrets.SMTP_USERNAME }}
-          password: ${{ secrets.SMTP_PASSWORD }}
           subject: "Health Check Failures"
           body: |
             The following checks failed:
