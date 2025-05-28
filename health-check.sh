@@ -60,8 +60,8 @@ done
 if [[ $commit == true ]]
 then
   # does this need to be here at all or can it be an NPA?
-  git config --global user.name 'Matthew Bailey'
-  git config --global user.email 'matthew.bailey@york.ac.uk'
+  git config --global user.name 'Elise-Brook Davis-Hirst'
+  git config --global user.email 'elise-brook.davis-hirst@york.ac.uk'
   git add -A --force logs/
   git commit -am '[Automated] Update Health Check Logs'
   git push
