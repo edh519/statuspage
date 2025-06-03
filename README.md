@@ -1,11 +1,11 @@
 # statuspage
 
-- Repo-Status: Dev
-- Repo-Contents: Demo
+- Repo-Status: Active
+- Repo-Contents: Web Application
 - Repo-Service-Name: Statsig's Open-Source Status Page
 - Repo-Ownership-Rating: 1
 - Repo-Quality-Rating: 3
-- Repo-Next-Review-Due: 2025-05-01
+- Repo-Next-Review-Due: 2026-05-03
 
 Published at https://uoy-trials.github.io/statuspage/
 
