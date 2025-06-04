@@ -10,6 +10,8 @@ jobs:
   health_check_job:
     runs-on: [self-hosted]
     name: Check all sites
+    env:
+      GITHUB_TOKEN: ${{ secrets.GH_TEST_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
