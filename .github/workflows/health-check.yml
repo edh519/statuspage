@@ -11,7 +11,7 @@ jobs:
     runs-on: [self-hosted]
     name: Check all sites
     env:
-      GITHUB_TOKEN: ${{ secrets.GH_TEST_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GH_REPO_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -20,10 +20,8 @@ jobs:
         run: bash ./health-check.sh
       - name: Commit and Push Logs
         run: |
-              git config user.name "ytubot"
-              git config user.email "ytu-developers-group+githubapi@york.ac.uk"
-              git add -A --force logs/
-              git commit -am "[Automated] Update Health Check Logs" || echo "Nothing to commit"
-              git push "https://x-access-token:${{ secrets.GH_TEST_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:main
-        env:
-          GH_TEST_TOKEN: ${{ secrets.APPROVE_README_PAT }}
+          git config user.name "ytubot"
+          git config user.email "ytu-developers-group+githubapi@york.ac.uk"
+          git add -A --force logs/
+          git commit -am "[Automated] Update Health Check Logs" || echo "Nothing to commit"
+          git push "https://x-access-token:${{ secrets.GH_REPO_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:main
