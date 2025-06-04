@@ -39,8 +39,3 @@ for (( index=0; index < ${#KEYSARRAY[@]}; index++ )); do
   # Keep only the last 2000 lines
   tail -2000 "logs/${key}_report.log" > "logs/${key}_report.tmp" && mv "logs/${key}_report.tmp" "logs/${key}_report.log"
 done
-
-git config --global user.name 'ytubot'
-git config --global user.email 'ytu-developers-group+githubapi@york.ac.uk'
-git add -A --force logs/
-git commit -am '[Automated] Update Health Check Logs'
