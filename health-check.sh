@@ -44,4 +44,4 @@ git config --global user.name 'ytubot'
 git config --global user.email 'ytu-developers-group+githubapi@york.ac.uk'
 git add -A --force logs/
 git commit -am '[Automated] Update Health Check Logs'
-git push
+git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:main
