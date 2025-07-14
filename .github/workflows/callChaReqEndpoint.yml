@@ -1,0 +1,57 @@
+name: Call PullRequestDetails Endpoint 
+
+on:
+  pull_request:
+     types:
+       - closed
+
+jobs:
+  process-merged-pr:
+    if: github.event.pull_request.merged == true  # Only run if the PR is merged
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Run PowerShell Script
+      run: |
+        # Define Variables
+        $RepositoryId = 966854373
+        $PullRequestId = "${{ github.event.pull_request.number }}"
+        $Repository = "${{ github.repository }}"
+        $AuthToken = "${{ secrets.AUTH_GITHUB_TOKEN }}" 
+        
+        # GitHub API URLs
+        $PullRequestUrl = "https://api.github.com/repos/$Repository/pulls/$PullRequestId"
+        $PullRequestReviewsUrl = "$PullRequestUrl/reviews"
+        
+        # Fetch Data Using Invoke-RestMethod
+        $PullRequestResponse = Invoke-RestMethod -Uri $PullRequestUrl -Headers @{
+            "User-Agent" = "PowerShell"
+            "Authorization" = "Bearer $AuthToken"
+        }
+        $PullRequestReviewsResponse = Invoke-RestMethod -Uri $PullRequestReviewsUrl -Headers @{
+            "User-Agent" = "PowerShell"
+            "Authorization" = "Bearer $AuthToken"
+        }
+        
+        # Extract the PR Body from the JSON response
+        $PullRequestBody = $PullRequestResponse.body
+        
+        # Combine the Data into a Single Object
+        $CombinedData = [PSCustomObject]@{
+            PR_Body = $PullRequestBody
+            Reviews = $PullRequestReviewsResponse
+            RepositoryId = $RepositoryId
+        }
+        
+        # Convert Combined Data to JSON
+        $CombinedDataJson = $CombinedData | ConvertTo-Json -Depth 10
+        
+        # Send the data to the API controller using curl
+        curl -X POST "https://ytu.york.ac.uk/ChaReq/api/PullRequest/PullRequestDetails" `
+            -H "Content-Type: application/json" `
+            -H "ApiToken: ${{ secrets.CHAREQ_APITOKEN }}" `
+            -d "$CombinedDataJson"
+      shell: pwsh     
