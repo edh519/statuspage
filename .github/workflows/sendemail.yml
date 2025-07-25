@@ -1,0 +1,35 @@
+name: Send Email 
+
+on:
+  workflow_dispatch: 
+  push:
+    branches:
+      - 1-set-up-email-service
+
+jobs:
+  send_notification_email:
+    runs-on: [self-hosted, linux, x64]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Send email notification
+        uses: dawidd6/action-send-mail@v5
+        with:
+          server_address: ${{ secrets.MAIL_SERVER }}
+          server_port: ${{ secrets.MAIL_PORT }}
+          username: ${{ secrets.MAIL_USERNAME }}
+          subject: "GitHub Action Notification: ${{ github.workflow }} - ${{ github.ref_name }}"
+          to: tom.pool@york.ac.uk
+          from: "${{ github.repository }} <${{ secrets.MAIL_USERNAME }}>" # Display name <email@domain.com>
+          reply_to: ytu-techsupport-group@york.ac.uk
+          body: |
+            Hello Tom.
+
+            The GitHub Action workflow "${{ github.workflow }}" for repository "${{ github.repository }}" has completed successfully.
+
+            This is the email body.
+            You can add more details here.
+            
+          # secure: true # Use this if your server requires SMTPS (port 465)
+          # enable_tls: true # Use this if your server requires STARTTLS (often on port 587)
