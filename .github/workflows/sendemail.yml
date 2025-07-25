@@ -1,11 +1,12 @@
 name: Send Email 
 
 on:
-  workflow_dispatch: 
-  push:
-    branches:
-      - 1-set-up-email-service
-
+  workflow_dispatch:
+    inputs:
+      recipient_email:
+        description: 'The email address to send the notification to'
+        required: true 
+        type: string
 jobs:
   send_notification_email:
     runs-on: [self-hosted, linux, x64]
@@ -20,7 +21,7 @@ jobs:
           server_port: ${{ secrets.MAIL_PORT }}
           username: ${{ secrets.MAIL_USERNAME }}
           subject: "${{ github.repository }} Notification: System Report"
-          to: tom.pool@york.ac.uk
+          to: ${{ github.event.inputs.recipient_email }}
           from: "${{ github.repository }} <${{ secrets.MAIL_USERNAME }}>" # Display name <email@domain.com>
           reply_to: ytu-techsupport-group@york.ac.uk
           body: |
