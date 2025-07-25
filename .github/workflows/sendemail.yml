@@ -19,17 +19,9 @@ jobs:
           server_address: ${{ secrets.MAIL_SERVER }}
           server_port: ${{ secrets.MAIL_PORT }}
           username: ${{ secrets.MAIL_USERNAME }}
-          subject: "GitHub Action Notification: ${{ github.workflow }} - ${{ github.ref_name }}"
+          subject: "${{ github.repository }} Notification: System Report"
           to: tom.pool@york.ac.uk
           from: "${{ github.repository }} <${{ secrets.MAIL_USERNAME }}>" # Display name <email@domain.com>
           reply_to: ytu-techsupport-group@york.ac.uk
           body: |
-            Hello Tom.
-
-            The GitHub Action workflow "${{ github.workflow }}" for repository "${{ github.repository }}" has completed successfully.
-
-            This is the email body.
-            You can add more details here.
-            
-          # secure: true # Use this if your server requires SMTPS (port 465)
-          # enable_tls: true # Use this if your server requires STARTTLS (often on port 587)
+            Hello from GitHub.
