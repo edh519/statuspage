@@ -22,7 +22,8 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           subject: "${{ github.repository }} Notification: System Report"
           to: ${{ github.event.inputs.recipient_email }}
-          from: "${{ github.repository }} <${{ secrets.MAIL_USERNAME }}>" # Display name <email@domain.com>
+          from: "${{ github.repository }} <${{ secrets.MAIL_USERNAME }}>" 
           reply_to: ytu-techsupport-group@york.ac.uk
+          # Body is plain text, HTML is possible. 
           body: |
             Hello from GitHub.
