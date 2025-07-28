@@ -19,13 +19,6 @@ jobs:
       - name: Run Shell Script
         id: shell_script_run
         run: bash ./health-check.sh
-      - name: Commit and Push Logs
-        run: |
-          git config user.name "ytubot"
-          git config user.email "ytu-developers-group+githubapi@york.ac.uk"
-          git add -A --force logs/
-          git commit -am "[Automated] Update Health Check Logs" || echo "Nothing to commit"
-          git push "https://x-access-token:${{ secrets.GH_REPO_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:main
       - name: Check for failed systems and trigger email notifications
         id: check_failed
         run: |
@@ -35,7 +28,6 @@ jobs:
             cat logs/email_triggers.txt >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
           fi
-
       - name: Send email notification for failed systems
         if: success() && hashFiles('logs/email_triggers.txt') != ''
         uses: dawidd6/action-send-mail@v5
@@ -49,10 +41,15 @@ jobs:
           reply_to: ytu-techsupport-group@york.ac.uk
           body: |
             The following systems have failed and require attention:
-            
+      
             ${{ steps.check_failed.outputs.failed_systems }}
-            
-            Please investigate these systems as soon as possible.
       - name: Update failed_systems.log after notifications
         if: success() && hashFiles('logs/email_triggers.txt') != ''
         run: bash ./update_failed_systems_log.sh
+      - name: Commit and Push Logs
+        run: |
+          git config user.name "ytubot"
+          git config user.email "ytu-developers-group+githubapi@york.ac.uk"
+          git add -A --force logs/
+          git commit -am "[Automated] Update Health Check Logs" || echo "Nothing to commit"
+          git push "https://x-access-token:${{ secrets.GH_REPO_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:main
