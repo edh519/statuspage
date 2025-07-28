@@ -28,3 +28,20 @@ jobs:
           git push "https://x-access-token:${{ secrets.GH_REPO_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:main
       - name: Check for failed systems and trigger email notifications
         run: bash ./notify_failed_systems.sh
+      - name: Send email notification for failed systems
+        if: success() && hashFiles('logs/email_triggers.txt') != ''
+        uses: dawidd6/action-send-mail@v5
+        with:
+          server_address: ${{ secrets.MAIL_SERVER }}
+          server_port: ${{ secrets.MAIL_PORT }}
+          username: ${{ secrets.MAIL_USERNAME }}
+          subject: "${{ github.repository }} Notification: System Report"
+          to: ytu-techsupport-group@york.ac.uk
+          from: "${{ github.repository }} <${{ secrets.MAIL_USERNAME }}>"
+          reply_to: ytu-techsupport-group@york.ac.uk
+          body: |
+            The following systems have failed and require attention:
+            ${{ steps.shell_script_run.outputs.failed_keys }}
+      - name: Update failed_systems.log after notifications
+        if: success() && hashFiles('logs/email_triggers.txt') != ''
+        run: bash ./update_failed_systems_log.sh
