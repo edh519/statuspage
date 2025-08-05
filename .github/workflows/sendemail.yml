@@ -1,0 +1,29 @@
+name: Send Email 
+
+on:
+  workflow_dispatch:
+    inputs:
+      recipient_email:
+        description: 'The email address to send the notification to'
+        required: true 
+        type: string
+jobs:
+  send_notification_email:
+    runs-on: [self-hosted, linux, x64]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Send email notification
+        uses: dawidd6/action-send-mail@v5
+        with:
+          server_address: ${{ secrets.MAIL_SERVER }}
+          server_port: ${{ secrets.MAIL_PORT }}
+          username: ${{ secrets.MAIL_USERNAME }}
+          subject: "${{ github.repository }} Notification: System Report"
+          to: ${{ github.event.inputs.recipient_email }}
+          from: "${{ github.repository }} <${{ secrets.MAIL_USERNAME }}>" 
+          reply_to: ytu-techsupport-group@york.ac.uk
+          # Body is plain text, HTML is possible. 
+          body: |
+            Hello from GitHub.
