@@ -19,6 +19,36 @@ jobs:
       - name: Run Shell Script
         id: shell_script_run
         run: bash ./health-check.sh
+      - name: Check for failed systems and trigger email notifications
+        id: check_failed
+        run: |
+          bash ./notify_failed_systems.sh
+          if [[ -f logs/email_triggers.txt && -s logs/email_triggers.txt ]]; then
+            echo "failed_systems<<EOF" >> $GITHUB_OUTPUT
+            cat logs/email_triggers.txt >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            echo "has_failures=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_failures=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Send email notification for failed systems
+        if: steps.check_failed.outputs.has_failures == 'true'
+        uses: dawidd6/action-send-mail@v5
+        with:
+          server_address: ${{ secrets.MAIL_SERVER }}
+          server_port: ${{ secrets.MAIL_PORT }}
+          username: ${{ secrets.MAIL_USERNAME }}
+          subject: "${{ github.repository }} Notification: System Report"
+          to: ytu-techsupport-group@york.ac.uk
+          from: "${{ github.repository }} <${{ secrets.MAIL_USERNAME }}>"
+          reply_to: ytu-techsupport-group@york.ac.uk
+          body: |
+            The following systems have failed and require attention:
+      
+            ${{ steps.check_failed.outputs.failed_systems }}
+      - name: Update failed_systems.log after notifications
+        if: steps.check_failed.outputs.has_failures == 'true'
+        run: bash ./update_failed_systems_log.sh
       - name: Commit and Push Logs
         run: |
           git config user.name "ytubot"
