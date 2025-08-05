@@ -24,3 +24,11 @@ jobs:
         run: |
          echo "The following systems have failed and require attention:"
          echo "${{ steps.check_failed.outputs.failed_systems }}"
+      - name: Update failed_systems.log after notifications
+        if: steps.check_failed.outputs.has_failures == 'true'
+        run: bash ./update_failed_systems_log.sh
+      - name: Commit and Push Logs
+        run: |
+          git config user.name "test"
+          git config user.email "elise-brook.davis-hirst@york.ac.uk"
+          git add -A --force logs/
