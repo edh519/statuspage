@@ -10,12 +10,12 @@ jobs:
   health_check_job:
     runs-on: ubuntu-latest
     name: Check all sites
-   # env:
-   #   GITHUB_TOKEN: ${{ secrets.GH_REPO_TOKEN }}
+    env:
+      GITHUB_TOKEN: ${{ secrets.GH_REPO_TOKEN }}
     steps:
       - uses: actions/checkout@v4
-     #   with:
-     #     token: ${{ secrets.GH_REPO_TOKEN }} 
+        with:
+          token: ${{ secrets.GH_REPO_TOKEN }} 
       - name: Run Shell Script
         id: shell_script_run
         run: bash ./health-check.sh
